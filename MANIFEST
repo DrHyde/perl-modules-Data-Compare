@@ -15,5 +15,4 @@ t/scalar-properties.t
 t/taint.t
 t/deep-recursion.t
 t/deep-objects.t
-META.yml                                 Module meta-data (added by MakeMaker)
 t/realtainttest
