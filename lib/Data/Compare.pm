@@ -1,5 +1,3 @@
-# -*- mode: Perl -*-
-
 # Data::Compare - compare perl data structures
 # Author: Fabien Tassin <fta@sofaraway.org>
 # updated by David Cantrell <david@cantrell.org.uk>
@@ -25,11 +23,11 @@ my %handler;
 use Cwd;
 if(eval { chdir(getcwd()) }) { # chdir(getcwd()) is Bad in taint mode
     use File::Find::Rule;
-    register_plugins();
+    _register_plugins();
 }
 
 # finds and registers plugins
-sub register_plugins {
+sub _register_plugins {
     foreach my $file (
         File::Find::Rule
             ->file()
@@ -380,19 +378,22 @@ affects you, please supply a portable patch.
 
 =head1 AUTHOR
 
-Fabien Tassin        fta@sofaraway.org
+Fabien Tassin E<lt>fta@sofaraway.orgE<gt>
+
+Portions by David Cantrell E<lt>david@cantrell.org.ukE<gt>
+
+=head1 COPYRIGHT and LICENCE
 
 Copyright (c) 1999-2001 Fabien Tassin. All rights reserved.
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
+Some parts copyright 2003 - 2007 David Cantrell.
+
 Seeing that Fabien seems to have disappeared, David Cantrell has become
 a co-maintainer so he can apply needed patches.  The licence, of course,
 remains the same, and all communications about this module should be
 CCed to Fabien in case he ever returns and wants his baby back.
-
-Portions, including plugins, copyright 2003-2007 David Cantrell
-david@cantrell.org.uk
 
 =head1 SEE ALSO
 

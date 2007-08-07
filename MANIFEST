@@ -16,3 +16,4 @@ t/taint.t
 t/deep-recursion.t
 t/deep-objects.t
 t/realtainttest
+t/pod.t

@@ -79,7 +79,7 @@ if the two values are the same, regardless of the presence of properties.
 If you compare two Scalar::Properties objects, then they will only be
 considered the same if the values and the properties match.
 
-=back 4
+=back
 
 =head1 AUTHOR
 
