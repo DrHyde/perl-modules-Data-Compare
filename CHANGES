@@ -1,3 +1,7 @@
+1.18  2008-XX-XX  DCANTRELL  Got rid of prototypes;
+                             File::Find::Rule now only loads when needed;
+                             Plugins can be ignored with a null import() list
+
 0.17  2007-08-07  DCANTRELL  Added POD test
                              Fixed buggy POD :-)
                              Fixed problem with taint testing when PERL5LIB

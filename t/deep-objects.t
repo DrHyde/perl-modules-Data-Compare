@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use diagnostics;
+# use diagnostics;
 
 eval 'use Clone';
 ($@) ?

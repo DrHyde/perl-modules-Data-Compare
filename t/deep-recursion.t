@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use diagnostics;
+# use diagnostics;
 
 use Data::Compare;
 use Test::More tests => 3;

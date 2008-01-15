@@ -2,7 +2,7 @@
 # Author: Fabien Tassin <fta@sofaraway.org>
 # updated by David Cantrell <david@cantrell.org.uk>
 # Copyright 1999-2001 Fabien Tassin <fta@sofaraway.org>
-# portions Copyright 2003 - 2007 David Cantrell
+# portions Copyright 2003 - 2008 David Cantrell
 
 package Data::Compare;
 
@@ -15,19 +15,23 @@ use Carp;
 
 @ISA     = qw(Exporter);
 @EXPORT  = qw(Compare);
-$VERSION = '0.17';
+$VERSION = '1.18';
 $DEBUG   = 0;
 
 my %handler;
 
 use Cwd;
-if(eval { chdir(getcwd()) }) { # chdir(getcwd()) is Bad in taint mode
-    use File::Find::Rule;
-    _register_plugins();
+
+sub import {
+    if(eval { chdir(getcwd()) }) { # chdir(getcwd()) isn't taint-safe
+        register_plugins();
+    }
+    __PACKAGE__->export_to_level(1, @EXPORT);
 }
 
 # finds and registers plugins
-sub _register_plugins {
+sub register_plugins {
+    eval 'use File::Find::Rule';
     foreach my $file (
         File::Find::Rule
             ->file()
@@ -73,7 +77,7 @@ sub _register_plugins {
     }
 }
 
-sub Compare ($$;$);
+# sub Compare ($$;$);
 
 sub new {
   my $this = shift;
@@ -85,7 +89,7 @@ sub new {
   return $self;
 }
 
-sub Cmp ($;$$) {
+sub Cmp {
   my $self = shift;
 
   croak "Usage: DataCompareObj->Cmp(x, y)" unless $#_ == 1 || $#_ == -1;
@@ -95,7 +99,7 @@ sub Cmp ($;$$) {
   return Compare($x, $y);
 }
 
-sub Compare ($$;$) {
+sub Compare {
     croak "Usage: Data::Compare::Compare(x, y, [opts])\n" unless $#_ == 1 || $#_ == 2;
 
     my $x = shift @_;
@@ -345,7 +349,11 @@ The module takes plug-ins so you can provide specialised routines for
 comparing your own objects and data-types.  For details see
 L<Data::Compare::Plugins>.
 
-Plugins are *not* available when running in "taint" mode.
+Plugins are *not* available when running in "taint" mode.  You may
+also make it not load plugins by providing an empty list as the
+argument to import() - ie, by doing this:
+
+    use Data::Compare ();
 
 A couple of functions are provided to examine what goodies have been
 made available through plugins:
@@ -364,6 +372,18 @@ It takes no parameters.
 Returns formatted text
 
 =back
+
+=head1 EXPORTS
+
+For historical reasons, the Compare() function is exported.  If you
+don't want this, then pass an empty list to import() as explained
+under PLUGINS.  If you want no export but do want plugins, then pass
+the empty list, and then call the register_plugins class method:
+
+    use Data::Compare ();
+    Data::Compare->register_plugins;
+
+or you could call it as a function if that floats your boat.
 
 =head1 BUGS
 
@@ -388,7 +408,7 @@ Copyright (c) 1999-2001 Fabien Tassin. All rights reserved.
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
-Some parts copyright 2003 - 2007 David Cantrell.
+Some parts copyright 2003 - 2008 David Cantrell.
 
 Seeing that Fabien seems to have disappeared, David Cantrell has become
 a co-maintainer so he can apply needed patches.  The licence, of course,
