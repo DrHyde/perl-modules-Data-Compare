@@ -1,7 +1,8 @@
 1.18  2008-01-15  DCANTRELL  Got rid of prototypes;
                              File::Find::Rule now only loads when needed;
                              Plugins can be ignored with a null import() list;
-                             Explicitly documented the auto-export
+                             Explicitly documented the auto-export;
+                             Got rid of diagnostics pragma
 
 0.17  2007-08-07  DCANTRELL  Added POD test
                              Fixed buggy POD :-)
