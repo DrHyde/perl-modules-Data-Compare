@@ -152,15 +152,15 @@ sub Compare {
             $rval = 1;
         }
         elsif ($refx eq 'SCALAR' || $refx eq 'REF') {
-            $rval = Compare($$x, $$y, $opts);
+            $rval = Compare(${$x}, ${$y}, $opts);
         }
         elsif ($refx eq 'ARRAY') {
-            if ($#$x == $#$y) { # same length
+            if ($#{$x} == $#{$y}) { # same length
                 my $i = -1;
                 $rval = 1;
                 for (@$x) {
             	    $i++;
-      	            $rval = 0 unless Compare($$x[$i], $$y[$i], { %{$opts}, xparent => $x, xpos => $i, yparent => $y, ypos => $i});
+      	            $rval = 0 unless Compare($x->[$i], $y->[$i], { %{$opts}, xparent => $x, xpos => $i, yparent => $y, ypos => $i});
                 }
             }
             else {
@@ -174,8 +174,8 @@ sub Compare {
             $rval = 0 unless scalar @kx == scalar @ky;
 
             for (@kx) {
-                next unless defined $$x{$_} || defined $$y{$_};
-                $rval = 0 unless defined $$y{$_} && Compare($$x{$_}, $$y{$_}, { %{$opts}, xparent => $x, xpos => $_, yparent => $y, ypos => $_});
+                next unless defined $x->{$_} || defined $y->{$_};
+                $rval = 0 unless defined $y->{$_} && Compare($x->{$_}, $y->{$_}, { %{$opts}, xparent => $x, xpos => $_, yparent => $y, ypos => $_});
             }
         }
         elsif($refx eq 'Regexp') {
@@ -204,8 +204,8 @@ sub Compare {
                 $been_there{\@y."-$ypos-$yparent"}--;
             }
             elsif ($type eq 'SCALAR' || $type eq 'REF') {
-                my $x = $$x;
-                my $y = $$y;
+                my $x = ${$x};
+                my $y = ${$y};
                 $rval = Compare($x, $y, $opts);
                 # $been_there{\$x}--;
                 # $been_there{\$y}--;
