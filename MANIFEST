@@ -20,3 +20,4 @@ t/pod.t
 NOTES
 t/noimport.t
 t/noimport-register_plugins.t
+t/duplicates.t

@@ -12,10 +12,11 @@ use warnings;
 use vars qw(@ISA @EXPORT $VERSION $DEBUG %been_there);
 use Exporter;
 use Carp;
+use Scalar::Util;
 
 @ISA     = qw(Exporter);
 @EXPORT  = qw(Compare);
-$VERSION = '1.18';
+$VERSION = '1.19';
 $DEBUG   = 0;
 
 my %handler;
@@ -77,8 +78,6 @@ sub register_plugins {
     }
 }
 
-# sub Compare ($$;$);
-
 sub new {
   my $this = shift;
   my $class = ref($this) || $this;
@@ -102,9 +101,13 @@ sub Cmp {
 sub Compare {
     croak "Usage: Data::Compare::Compare(x, y, [opts])\n" unless $#_ == 1 || $#_ == 2;
 
-    my $x = shift @_;
-    my $y = shift @_;
-    my $opts = (shift @_) || {};
+    my $x = shift;
+    my $y = shift;
+    my $opts = shift || {};
+    my($xparent, $xpos, $yparent, $ypos) = map {
+        $opts->{$_} || ''
+    } qw(xparent xpos yparent ypos);
+
     my $rval = '';
 
     if(!exists($opts->{recursion_detector})) {
@@ -116,13 +119,13 @@ sub Compare {
     warn "Yaroo! deep recursion!\n" if($opts->{recursion_detector} == 99);
   
     if(
-        (ref($x) && exists($been_there{$x}) && $been_there{$x} > 1) ||
-        (ref($y) && exists($been_there{$y}) && $been_there{$y} > 1)
+        (ref($x) && exists($been_there{"$x-$xpos-$xparent"}) && $been_there{"$x-$xpos-$xparent"} > 1) ||
+        (ref($y) && exists($been_there{"$y-$ypos-$yparent"}) && $been_there{"$y-$ypos-$yparent"} > 1)
     ) {
         $rval = 0; # is this the right thing to do?
     } else {
-        $been_there{$x}++ if(ref($x));
-        $been_there{$y}++ if(ref($y));
+        $been_there{"$x-$xpos-$xparent"}++ if(ref($x));
+        $been_there{"$y-$ypos-$yparent"}++ if(ref($y));
 
         $opts->{ignore_hash_keys} = { map {
             ($_, 1)
@@ -157,7 +160,7 @@ sub Compare {
                 $rval = 1;
                 for (@$x) {
             	    $i++;
-      	            $rval = 0 unless Compare($$x[$i], $$y[$i], $opts);
+      	            $rval = 0 unless Compare($$x[$i], $$y[$i], { %{$opts}, xparent => $x, xpos => $i, yparent => $y, ypos => $i});
                 }
             }
             else {
@@ -172,7 +175,7 @@ sub Compare {
 
             for (@kx) {
                 next unless defined $$x{$_} || defined $$y{$_};
-                $rval = 0 unless defined $$y{$_} && Compare($$x{$_}, $$y{$_}, $opts);
+                $rval = 0 unless defined $$y{$_} && Compare($$x{$_}, $$y{$_}, { %{$opts}, xparent => $x, xpos => $_, yparent => $y, ypos => $_});
             }
         }
         elsif($refx eq 'Regexp') {
@@ -189,16 +192,16 @@ sub Compare {
             if ($type eq 'HASH') {
                 my %x = %$x;
                 my %y = %$y;
-                $rval = Compare(\%x, \%y, $opts);
-                $been_there{\%x}--; # decrement count for temp structures
-                $been_there{\%y}--;
+                $rval = Compare(\%x, \%y, { %{$opts}, xparent => $xparent, xpos => $xpos, yparent => $yparent, ypos => $ypos});
+                $been_there{\%x."-$xpos-$xparent"}--; # decrement count for temp structures
+                $been_there{\%y."-$ypos-$yparent"}--;
             }
             elsif ($type eq 'ARRAY') {
                 my @x = @$x;
                 my @y = @$y;
-                $rval = Compare(\@x, \@y, $opts);
-                $been_there{\@x}--;
-                $been_there{\@y}--;
+                $rval = Compare(\@x, \@y, { %{$opts}, xparent => $xparent, xpos => $xpos, yparent => $yparent, ypos => $ypos});
+                $been_there{\@x."-$xpos-$xparent"}--;
+                $been_there{\@y."-$ypos-$yparent"}--;
             }
             elsif ($type eq 'SCALAR' || $type eq 'REF') {
                 my $x = $$x;
