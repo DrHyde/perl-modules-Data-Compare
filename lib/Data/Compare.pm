@@ -388,6 +388,10 @@ the empty list, and then call the register_plugins class method:
 
 or you could call it as a function if that floats your boat.
 
+=head1 CVS
+
+L<http://drhyde.cvs.sourceforge.net/drhyde/perlmodules/Data-Compare/>
+
 =head1 BUGS
 
 Plugin support is not quite finished (see the TODO file for details) but
