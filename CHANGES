@@ -1,6 +1,6 @@
-1.19  XXXX-XX-XX  DCANTRELL  Can now compare structures with repeats in 'em
+1.19  2008-05-12  DCANTRELL  Can now compare structures with repeats in 'em
                                like [\$z, \$z] (bug reported by Todd Hepler)
-			     Minor code tidying
+                             Minor code tidying
 1.18  2008-01-15  DCANTRELL  Got rid of prototypes;
                              File::Find::Rule now only loads when needed;
                              Plugins can be ignored with a null import() list;
