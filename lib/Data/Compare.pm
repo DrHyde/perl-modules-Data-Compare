@@ -1,3 +1,4 @@
+# $Id: Compare.pm,v 1.8 2008/08/12 10:17:16 drhyde Exp $
 # Data::Compare - compare perl data structures
 # Author: Fabien Tassin <fta@sofaraway.org>
 # updated by David Cantrell <david@cantrell.org.uk>

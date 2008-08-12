@@ -1,3 +1,6 @@
+1.20  XXXX-XX-XX  DCANTRELL  Added test for bug reported by Saritha
+                               Nalagandla (but no bug found)
+
 1.19  2008-05-12  DCANTRELL  Can now compare structures with repeats in 'em
                                like [\$z, \$z] (bug reported by Todd Hepler)
                              Minor code tidying
