@@ -21,3 +21,6 @@ NOTES
 t/noimport.t
 t/noimport-register_plugins.t
 t/duplicates.t
+t/saritha-nalagandla-bug.t
+t/saritha-nalagandla-bug/test082_updateevent_multipleinvitees.exp
+t/saritha-nalagandla-bug/test082_updateevent_multipleinvitees.out

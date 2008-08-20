@@ -1,5 +1,7 @@
 #!perl -w
 
+use Config;
+
 if($^O =~ /vms/i) {
     # $^X isn't VMS-friendly.  I'm disinclined to add a dependency on
     # Probe::Perl just for testing this corner-case
@@ -16,7 +18,7 @@ if($^O =~ /vms/i) {
         join(' ',
             $^X,
             '-Tw',
-            (map { "-I$_" } split(/:/, $perl5lib)),
+            (map { "-I$_" } split(/$Config{path_sep}/, $perl5lib)),
             't/realtainttest'
         )
     );

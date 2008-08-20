@@ -1,5 +1,8 @@
 1.20  XXXX-XX-XX  DCANTRELL  Added test for bug reported by Saritha
-                               Nalagandla (but no bug found)
+                               Nalagandla (no bug found, but you can never
+			       have too many tests!)
+			     Fixed bug in PERL5LIB splitting in taint test
+			       (thanks to ADAMK, see RT 38319)
 
 1.19  2008-05-12  DCANTRELL  Can now compare structures with repeats in 'em
                                like [\$z, \$z] (bug reported by Todd Hepler)
