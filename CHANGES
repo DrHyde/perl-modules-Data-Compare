@@ -1,4 +1,4 @@
-1.20  XXXX-XX-XX  DCANTRELL  Added test for bug reported by Saritha
+1.20  2008-08-21  DCANTRELL  Added test for bug reported by Saritha
                                Nalagandla (no bug found, but you can never
 			       have too many tests!)
 			     Fixed bug in PERL5LIB splitting in taint test
