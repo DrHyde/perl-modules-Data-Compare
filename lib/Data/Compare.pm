@@ -1,4 +1,4 @@
-# $Id: Compare.pm,v 1.9 2008/08/20 13:55:52 drhyde Exp $
+# $Id: Compare.pm,v 1.10 2008/08/26 20:51:36 drhyde Exp $
 # Data::Compare - compare perl data structures
 # Author: Fabien Tassin <fta@sofaraway.org>
 # updated by David Cantrell <david@cantrell.org.uk>
@@ -17,7 +17,7 @@ use Scalar::Util;
 
 @ISA     = qw(Exporter);
 @EXPORT  = qw(Compare);
-$VERSION = '1.20';
+$VERSION = 1.21;
 $DEBUG   = 0;
 
 my %handler;

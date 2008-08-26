@@ -1,11 +1,13 @@
 #!perl -w
-# $Id: saritha-nalagandla-bug.t,v 1.1 2008/08/12 10:20:00 drhyde Exp $
+# $Id: saritha-nalagandla-bug.t,v 1.2 2008/08/26 20:51:36 drhyde Exp $
 
 use strict;
 use Data::Compare;
 eval "use JSON";
 if($@) {
     eval 'use Test::More skip_all => "no JSON support";exit 0';
+} elsif($JSON::VERSION < 2) {
+    eval 'use Test::More skip_all => "JSON module too old";exit 0';
 } else {
     eval 'use Test::More tests => 2';
 }

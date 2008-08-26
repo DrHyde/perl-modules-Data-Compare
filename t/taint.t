@@ -18,7 +18,11 @@ if($^O =~ /vms/i) {
         join(' ',
             $^X,
             '-Tw',
-            (map { "-I$_" } split(/$Config{path_sep}/, $perl5lib)),
+            (
+                map { "-I$_" }
+                grep { -d $_ } # bleh, code-refs getting stringified
+                split(/$Config{path_sep}/, $perl5lib)
+            ),
             't/realtainttest'
         )
     );
