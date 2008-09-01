@@ -1,12 +1,16 @@
+1.21  2008-08-21  DCANTRELL  Extra tests added in 1.20 now skip with
+                               really old JSON
+
 1.20  2008-08-21  DCANTRELL  Added test for bug reported by Saritha
                                Nalagandla (no bug found, but you can never
-			       have too many tests!)
-			     Fixed bug in PERL5LIB splitting in taint test
-			       (thanks to ADAMK, see RT 38319)
+                               have too many tests!)
+                             Fixed bug in PERL5LIB splitting in taint test
+                               (thanks to ADAMK, see RT 38319)
 
 1.19  2008-05-12  DCANTRELL  Can now compare structures with repeats in 'em
                                like [\$z, \$z] (bug reported by Todd Hepler)
                              Minor code tidying
+
 1.18  2008-01-15  DCANTRELL  Got rid of prototypes;
                              File::Find::Rule now only loads when needed;
                              Plugins can be ignored with a null import() list;
