@@ -19,7 +19,8 @@ if($^O =~ /vms/i) {
             $^X,
             '-Tw',
             (
-                map { "-I$_" }
+		# map { "-I$_" }
+                map { qq{-I"$_"} }
                 grep { -d $_ } # bleh, code-refs getting stringified
                 split(/$Config{path_sep}/, $perl5lib)
             ),

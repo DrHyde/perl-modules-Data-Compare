@@ -24,3 +24,6 @@ t/duplicates.t
 t/saritha-nalagandla-bug.t
 t/saritha-nalagandla-bug/test082_updateevent_multipleinvitees.exp
 t/saritha-nalagandla-bug/test082_updateevent_multipleinvitees.out
+ARTISTIC.txt
+GPL2.txt
+t/coverage.sh

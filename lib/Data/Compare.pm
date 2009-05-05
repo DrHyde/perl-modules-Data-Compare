@@ -17,7 +17,7 @@ use Scalar::Util;
 
 @ISA     = qw(Exporter);
 @EXPORT  = qw(Compare);
-$VERSION = 1.21;
+$VERSION = 1.2101;
 $DEBUG   = 0;
 
 my %handler;
@@ -389,9 +389,9 @@ the empty list, and then call the register_plugins class method:
 
 or you could call it as a function if that floats your boat.
 
-=head1 CVS
+=head1 CODE REPOSITORY
 
-L<http://drhyde.cvs.sourceforge.net/drhyde/perlmodules/Data-Compare/>
+L<http://www.cantrell.org.uk/cgit/cgit.cgi/perlmodules/>
 
 =head1 BUGS
 
@@ -403,6 +403,11 @@ Plugins are unavailable if you can't change to the current directory.  This
 might happen if you started your process as a priveleged user and then
 dropped priveleges.  This is due to how we check for Taintedness.  If this
 affects you, please supply a portable patch.
+
+Please report any other bugs either by email to David Cantrell (see below
+for address) or using rt.cpan.org:
+
+L<https://rt.cpan.org/Ticket/Create.html?Queue=Data-Compare>
 
 =head1 AUTHOR
 
@@ -416,12 +421,13 @@ Copyright (c) 1999-2001 Fabien Tassin. All rights reserved.
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
-Some parts copyright 2003 - 2008 David Cantrell.
+Some parts copyright 2003 - 2009 David Cantrell.
 
 Seeing that Fabien seems to have disappeared, David Cantrell has become
 a co-maintainer so he can apply needed patches.  The licence, of course,
-remains the same, and all communications about this module should be
-CCed to Fabien in case he ever returns and wants his baby back.
+remains the same.  As the "perl licence" is "Artistic or GPL, your choice",
+you can find them as the files ARTISTIC.txt and GPL2.txt in the
+distribution.
 
 =head1 SEE ALSO
 
