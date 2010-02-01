@@ -17,7 +17,7 @@ use Scalar::Util;
 
 @ISA     = qw(Exporter);
 @EXPORT  = qw(Compare);
-$VERSION = 1.2101;
+$VERSION = 1.2102;
 $DEBUG   = 0;
 
 my %handler;
@@ -346,6 +346,37 @@ And on a sort-of-related note, if you try to compare insanely deeply nested
 structures, the module will spit a warning.  For this to affect you, you need to go
 around a hundred levels deep though, and if you do that you have bigger
 problems which I can't help you with ;-)
+
+=head1 STRUCTURAL EQUIVALENCE vs DATA EQUIVALENCE
+
+Consider the following two structures:
+
+    $a={}; $a->{a}=$a;
+    $b={}; $b->{a}=$b;
+
+They have the same structure - a hashref, with a key called 'a' whose value
+is a reference to the original hashref.  However, they contain different
+data, because the values are different.  This is evident when you stringify
+and compare them:
+
+    $a={}; $a->{a}=$a;
+    $b={}; $b->{a}=$b;
+    print $a->{a}."\n";
+    print $b->{a}."\n";
+    print Compare($a, $b)."\n"'
+
+says:
+
+    HASH(0x812c1c8)
+    HASH(0x812cb40)
+    0
+
+If, however, the $b hashref was constructed thus:
+
+    $b={}; $b->{a}=$a;
+
+so that it referred to $a instead of itself, they would be considered the
+same because the data are the same.
 
 =head1 PLUGINS
 

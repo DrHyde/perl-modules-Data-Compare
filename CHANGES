@@ -1,3 +1,6 @@
+1.2102  2010-02-01  DCANTRELL  Add doco about structural vs data equivalence
+                                 (see RT 52836)
+
 1.2101  2009-05-05  DCANTRELL  Add full licence text; -I fix in taint tests
                                  to cope with paths with a space in 'em
 				 (thanks to MATISSE, see RT 45676)
