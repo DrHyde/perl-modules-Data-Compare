@@ -1,9 +1,8 @@
-# $Id: Compare.pm,v 1.10 2008/08/26 20:51:36 drhyde Exp $
 # Data::Compare - compare perl data structures
 # Author: Fabien Tassin <fta@sofaraway.org>
 # updated by David Cantrell <david@cantrell.org.uk>
 # Copyright 1999-2001 Fabien Tassin <fta@sofaraway.org>
-# portions Copyright 2003 - 2008 David Cantrell
+# portions Copyright 2003 - 2010 David Cantrell
 
 package Data::Compare;
 
@@ -18,65 +17,62 @@ use Scalar::Util;
 @ISA     = qw(Exporter);
 @EXPORT  = qw(Compare);
 $VERSION = 1.2102;
-$DEBUG   = 0;
+$DEBUG   = $ENV{PERL_DATA_COMPARE_DEBUG} || 0;
 
 my %handler;
 
 use Cwd;
 
 sub import {
-    if(eval { chdir(getcwd()) }) { # chdir(getcwd()) isn't taint-safe
-        register_plugins();
-    }
-    __PACKAGE__->export_to_level(1, @EXPORT);
+  if(eval { chdir(getcwd()) }) { # chdir(getcwd()) isn't taint-safe
+    register_plugins();
+  }
+  __PACKAGE__->export_to_level(1, @EXPORT);
 }
 
 # finds and registers plugins
 sub register_plugins {
-    eval 'use File::Find::Rule';
-    foreach my $file (
-        File::Find::Rule
-            ->file()
-            ->name('*.pm')
-            ->in(
-	        map { "$_/Data/Compare/Plugins" }
-	        grep { -d "$_/Data/Compare/Plugins" }
-	        @INC
-	    )
-    ) {
-        # all of this just to avoid loading the same plugin twice and
-	# generating a pile of warnings. Grargh!
-        $file =~ s!.*(Data/Compare/Plugins/.*)\.pm$!$1!;
-	$file =~ s!/!::!g;
-	# ignore badly named example from earlier version, oops
-	next if($file eq 'Data::Compare::Plugins::Scalar-Properties');
-        my $requires = eval "require $file";
-	next if($requires eq '1'); # already loaded this plugin?
+  eval 'use File::Find::Rule';
+  foreach my $file (
+    File::Find::Rule->file()->name('*.pm')->in(
+      map { "$_/Data/Compare/Plugins" }
+      grep { -d "$_/Data/Compare/Plugins" }
+      @INC
+    )
+  ) {
+    # all of this just to avoid loading the same plugin twice and
+    # generating a pile of warnings. Grargh!
+    $file =~ s!.*(Data/Compare/Plugins/.*)\.pm$!$1!;
+    $file =~ s!/!::!g;
+    # ignore badly named example from earlier version, oops
+    next if($file eq 'Data::Compare::Plugins::Scalar-Properties');
+    my $requires = eval "require $file";
+    next if($requires eq '1'); # already loaded this plugin?
 
-	# not an arrayref? bail
-        if(ref($requires) ne 'ARRAY') {
-            warn("$file isn't a valid Data::Compare plugin (didn't return arrayref)\n");
-	    return;
-        }
-	# coerce into arrayref of arrayrefs if necessary
-	if(ref((@{$requires})[0]) ne 'ARRAY') { $requires = [$requires] }
-
-        # register all the handlers
-        foreach my $require (@{$requires}) {
-            my($handler, $type1, $type2, $cruft) = reverse @{$require};
-	    $type2 = $type1 unless(defined($type2));
-	    ($type1, $type2) = sort($type1, $type2);
-	    if(!defined($type1) || ref($type1) ne '' || !defined($type2) || ref($type2) ne '') {
-	        warn("$file isn't a valid Data::Compare plugin (invalid type)\n");
-	    } elsif(defined($cruft)) {
-	        warn("$file isn't a valid Data::Compare plugin (extra data)\n");
-	    } elsif(ref($handler) ne 'CODE') {
-	        warn("$file isn't a valid Data::Compare plugin (no coderef)\n");
-	    } else {
-                $handler{$type1}{$type2} = $handler;
-	    }
-        }
+    # not an arrayref? bail
+    if(ref($requires) ne 'ARRAY') {
+      warn("$file isn't a valid Data::Compare plugin (didn't return arrayref)\n");
+      return;
     }
+    # coerce into arrayref of arrayrefs if necessary
+    if(ref((@{$requires})[0]) ne 'ARRAY') { $requires = [$requires] }
+
+    # register all the handlers
+    foreach my $require (@{$requires}) {
+      my($handler, $type1, $type2, $cruft) = reverse @{$require};
+      $type2 = $type1 unless(defined($type2));
+      ($type1, $type2) = sort($type1, $type2);
+      if(!defined($type1) || ref($type1) ne '' || !defined($type2) || ref($type2) ne '') {
+        warn("$file isn't a valid Data::Compare plugin (invalid type)\n");
+      } elsif(defined($cruft)) {
+        warn("$file isn't a valid Data::Compare plugin (extra data)\n");
+      } elsif(ref($handler) ne 'CODE') {
+        warn("$file isn't a valid Data::Compare plugin (no coderef)\n");
+      } else {
+        $handler{$type1}{$type2} = $handler;
+      }
+    }
+  }
 }
 
 sub new {
@@ -100,145 +96,146 @@ sub Cmp {
 }
 
 sub Compare {
-    croak "Usage: Data::Compare::Compare(x, y, [opts])\n" unless $#_ == 1 || $#_ == 2;
+  croak "Usage: Data::Compare::Compare(x, y, [opts])\n" unless $#_ == 1 || $#_ == 2;
 
-    my $x = shift;
-    my $y = shift;
-    my $opts = shift || {};
-    my($xparent, $xpos, $yparent, $ypos) = map {
-        $opts->{$_} || ''
-    } qw(xparent xpos yparent ypos);
+  my $x = shift;
+  my $y = shift;
+  my $opts = shift || {};
+  my($xparent, $xpos, $yparent, $ypos) = map {
+    $opts->{$_} || ''
+  } qw(xparent xpos yparent ypos);
 
-    my $rval = '';
+  my $rval = '';
 
-    if(!exists($opts->{recursion_detector})) {
-        %been_there = ();
-        $opts->{recursion_detector} = 0;
-    }
-    $opts->{recursion_detector}++;
+  if(!exists($opts->{recursion_detector})) {
+    %been_there = ();
+    $opts->{recursion_detector} = 0;
+  }
+  $opts->{recursion_detector}++;
 
-    warn "Yaroo! deep recursion!\n" if($opts->{recursion_detector} == 99);
+  warn "Yaroo! deep recursion!\n" if($opts->{recursion_detector} == 99);
   
-    if(
-        (ref($x) && exists($been_there{"$x-$xpos-$xparent"}) && $been_there{"$x-$xpos-$xparent"} > 1) ||
-        (ref($y) && exists($been_there{"$y-$ypos-$yparent"}) && $been_there{"$y-$ypos-$yparent"} > 1)
-    ) {
-        $rval = 0; # is this the right thing to do?
-    } else {
-        $been_there{"$x-$xpos-$xparent"}++ if(ref($x));
-        $been_there{"$y-$ypos-$yparent"}++ if(ref($y));
+  if(
+    (ref($x) && exists($been_there{"$x-$xpos-$xparent"}) && $been_there{"$x-$xpos-$xparent"} > 1) ||
+    (ref($y) && exists($been_there{"$y-$ypos-$yparent"}) && $been_there{"$y-$ypos-$yparent"} > 1)
+  ) {
+    warn("This could go on for a very long time ...\n");
+    $rval = 0; # is this the right thing to do?
+  } else {
+    $been_there{"$x-$xpos-$xparent"}++ if(ref($x));
+    $been_there{"$y-$ypos-$yparent"}++ if(ref($y));
 
-        $opts->{ignore_hash_keys} = { map {
-            ($_, 1)
-        } @{$opts->{ignore_hash_keys}} } if(ref($opts->{ignore_hash_keys}) eq 'ARRAY');
+    $opts->{ignore_hash_keys} = { map {
+      ($_, 1)
+    } @{$opts->{ignore_hash_keys}} } if(ref($opts->{ignore_hash_keys}) eq 'ARRAY');
 
-        my $refx = ref $x;
-        my $refy = ref $y;
+    my $refx = ref $x;
+    my $refy = ref $y;
 
-        if(exists($handler{$refx}) && exists($handler{$refx}{$refy})) {
-            $rval = &{$handler{$refx}{$refy}}($x, $y, $opts);
-        } elsif(exists($handler{$refy}) && exists($handler{$refy}{$refx})) {
-            $rval = &{$handler{$refy}{$refx}}($x, $y, $opts);
-        }
-
-        elsif(!$refx && !$refy) { # both are scalars
-            if(defined $x && defined $y) { # both are defined
-                $rval = $x eq $y;
-            } else { $rval = !(defined $x || defined $y); }
-        }
-        elsif ($refx ne $refy) { # not the same type
-            $rval = 0;
-        }
-        elsif ($x == $y) { # exactly the same reference
-            $rval = 1;
-        }
-        elsif ($refx eq 'SCALAR' || $refx eq 'REF') {
-            $rval = Compare(${$x}, ${$y}, $opts);
-        }
-        elsif ($refx eq 'ARRAY') {
-            if ($#{$x} == $#{$y}) { # same length
-                my $i = -1;
-                $rval = 1;
-                for (@$x) {
-            	    $i++;
-      	            $rval = 0 unless Compare($x->[$i], $y->[$i], { %{$opts}, xparent => $x, xpos => $i, yparent => $y, ypos => $i});
-                }
-            }
-            else {
-                $rval = 0;
-            }
-        }
-        elsif ($refx eq 'HASH') {
-            my @kx = grep { !$opts->{ignore_hash_keys}->{$_} } keys %$x;
-            my @ky = grep { !$opts->{ignore_hash_keys}->{$_} } keys %$y; # heh, KY
-            $rval = 1;
-            $rval = 0 unless scalar @kx == scalar @ky;
-
-            for (@kx) {
-                next unless defined $x->{$_} || defined $y->{$_};
-                $rval = 0 unless defined $y->{$_} && Compare($x->{$_}, $y->{$_}, { %{$opts}, xparent => $x, xpos => $_, yparent => $y, ypos => $_});
-            }
-        }
-        elsif($refx eq 'Regexp') {
-            $rval = Compare($x.'', $y.'', $opts);
-        }
-        elsif ($refx eq 'CODE') {
-            $rval = 0;
-        }
-        elsif ($refx eq 'GLOB') {
-            $rval = 0;
-        }
-        else { # a package name (object blessed)
-            my ($type) = "$x" =~ m/^$refx=(\S+)\(/;
-            if ($type eq 'HASH') {
-                my %x = %$x;
-                my %y = %$y;
-                $rval = Compare(\%x, \%y, { %{$opts}, xparent => $xparent, xpos => $xpos, yparent => $yparent, ypos => $ypos});
-                $been_there{\%x."-$xpos-$xparent"}--; # decrement count for temp structures
-                $been_there{\%y."-$ypos-$yparent"}--;
-            }
-            elsif ($type eq 'ARRAY') {
-                my @x = @$x;
-                my @y = @$y;
-                $rval = Compare(\@x, \@y, { %{$opts}, xparent => $xparent, xpos => $xpos, yparent => $yparent, ypos => $ypos});
-                $been_there{\@x."-$xpos-$xparent"}--;
-                $been_there{\@y."-$ypos-$yparent"}--;
-            }
-            elsif ($type eq 'SCALAR' || $type eq 'REF') {
-                my $x = ${$x};
-                my $y = ${$y};
-                $rval = Compare($x, $y, $opts);
-                # $been_there{\$x}--;
-                # $been_there{\$y}--;
-            }
-            elsif ($type eq 'GLOB') {
-                $rval = 0;
-            }
-            elsif ($type eq 'CODE') {
-                $rval = 0;
-            }
-            else {
-                croak "Can't handle $type type.";
-                $rval = 0;
-            }
-        }
+    if(exists($handler{$refx}) && exists($handler{$refx}{$refy})) {
+      $rval = &{$handler{$refx}{$refy}}($x, $y, $opts);
+    } elsif(exists($handler{$refy}) && exists($handler{$refy}{$refx})) {
+      $rval = &{$handler{$refy}{$refx}}($x, $y, $opts);
     }
-    $opts->{recursion_detector}--;
-    return $rval;
+
+    elsif(!$refx && !$refy) { # both are scalars
+      if(defined $x && defined $y) { # both are defined
+        $rval = $x eq $y;
+      } else { $rval = !(defined $x || defined $y); }
+    }
+    elsif ($refx ne $refy) { # not the same type
+      $rval = 0;
+    }
+    elsif ($x == $y) { # exactly the same reference
+      $rval = 1;
+    }
+    elsif ($refx eq 'SCALAR' || $refx eq 'REF') {
+      $rval = Compare(${$x}, ${$y}, $opts);
+    }
+    elsif ($refx eq 'ARRAY') {
+      if ($#{$x} == $#{$y}) { # same length
+        my $i = -1;
+        $rval = 1;
+        for (@$x) {
+          $i++;
+          $rval = 0 unless Compare($x->[$i], $y->[$i], { %{$opts}, xparent => $x, xpos => $i, yparent => $y, ypos => $i});
+        }
+      }
+      else {
+        $rval = 0;
+      }
+    }
+    elsif ($refx eq 'HASH') {
+      my @kx = grep { !$opts->{ignore_hash_keys}->{$_} } keys %$x;
+      my @ky = grep { !$opts->{ignore_hash_keys}->{$_} } keys %$y; # heh, KY
+      $rval = 1;
+      $rval = 0 unless scalar @kx == scalar @ky;
+
+      for (@kx) {
+        next unless defined $x->{$_} || defined $y->{$_};
+        $rval = 0 unless defined $y->{$_} && Compare($x->{$_}, $y->{$_}, { %{$opts}, xparent => $x, xpos => $_, yparent => $y, ypos => $_});
+      }
+    }
+    elsif($refx eq 'Regexp') {
+      $rval = Compare($x.'', $y.'', $opts);
+    }
+    elsif ($refx eq 'CODE') {
+      $rval = 0;
+    }
+    elsif ($refx eq 'GLOB') {
+      $rval = 0;
+    }
+    else { # a package name (object blessed)
+      my ($type) = "$x" =~ m/^$refx=(\S+)\(/;
+      if ($type eq 'HASH') {
+        my %x = %$x;
+        my %y = %$y;
+        $rval = Compare(\%x, \%y, { %{$opts}, xparent => $xparent, xpos => $xpos, yparent => $yparent, ypos => $ypos});
+        $been_there{\%x."-$xpos-$xparent"}--; # decrement count for temp structures
+        $been_there{\%y."-$ypos-$yparent"}--;
+      }
+      elsif ($type eq 'ARRAY') {
+        my @x = @$x;
+        my @y = @$y;
+        $rval = Compare(\@x, \@y, { %{$opts}, xparent => $xparent, xpos => $xpos, yparent => $yparent, ypos => $ypos});
+        $been_there{\@x."-$xpos-$xparent"}--;
+        $been_there{\@y."-$ypos-$yparent"}--;
+      }
+      elsif ($type eq 'SCALAR' || $type eq 'REF') {
+        my $x = ${$x};
+        my $y = ${$y};
+        $rval = Compare($x, $y, $opts);
+        # $been_there{\$x}--;
+        # $been_there{\$y}--;
+      }
+      elsif ($type eq 'GLOB') {
+        $rval = 0;
+      }
+      elsif ($type eq 'CODE') {
+        $rval = 0;
+      }
+      else {
+        croak "Can't handle $type type.";
+        $rval = 0;
+      }
+    }
+  }
+  $opts->{recursion_detector}--;
+  return $rval;
 }
 
 sub plugins {
-    return { map { (($_ eq '') ? '[scalar]' : $_, [map { $_ eq '' ? '[scalar]' : $_ } keys %{$handler{$_}}]) } keys %handler };
+  return { map { (($_ eq '') ? '[scalar]' : $_, [map { $_ eq '' ? '[scalar]' : $_ } keys %{$handler{$_}}]) } keys %handler };
 }
 
 sub plugins_printable {
-    my $r = "The following comparisons are available through plugins\n\n";
-    foreach my $key (sort keys %handler) {
-        foreach(sort keys %{$handler{$key}}) {
-            $r .= join(":\t", map { $_ eq '' ? '[scalar]' : $_ } ($key, $_))."\n";
-	}
+  my $r = "The following comparisons are available through plugins\n\n";
+  foreach my $key (sort keys %handler) {
+    foreach(sort keys %{$handler{$key}}) {
+      $r .= join(":\t", map { $_ eq '' ? '[scalar]' : $_ } ($key, $_))."\n";
     }
-    return $r;
+  }
+  return $r;
 }
 
 1;
@@ -452,7 +449,7 @@ Copyright (c) 1999-2001 Fabien Tassin. All rights reserved.
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
-Some parts copyright 2003 - 2009 David Cantrell.
+Some parts copyright 2003 - 2010 David Cantrell.
 
 Seeing that Fabien seems to have disappeared, David Cantrell has become
 a co-maintainer so he can apply needed patches.  The licence, of course,
