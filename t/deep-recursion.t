@@ -5,7 +5,7 @@ use warnings;
 # use diagnostics;
 
 use Data::Compare;
-use Test::More tests => 4;
+use Test::More tests => 3;
 
 my $warning= '';
 $SIG{__WARN__} = sub { $warning= shift; };
@@ -17,11 +17,6 @@ foreach my $i (qw(a b c d e f g h i j)) {
         $data2->{$i}->{$j} = 'i like pie';
     }
 }
-
-# check that we DTRT on infinite recursion
-my $a = {c => 1}; $a->{a} = $a; 
-my $b = {c => 1}; $b->{a} = $b;
-ok(Compare($a, $b), "circular references detected and compares true");
 
 # check that we DTRT on very deep recursion
 $a = [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[0]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]];
