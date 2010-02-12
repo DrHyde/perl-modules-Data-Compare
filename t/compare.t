@@ -137,11 +137,11 @@ $x=\$y;
 $y=\$x; 
 $a->[0]=\$a->[1]; 
 $a->[1]=\$a->[0]; 
-&comp([$x, $y], $a, 0, "two parallel circular structures compare different");
+&comp([$x, $y], $a, 1, "two parallel circular structures compare the same");
 
 # these two are probably superfluous, as they test referential equality
 # rather than any of the stuff we added to do with circles and recursion
-&comp([$x, $y], [$y, $x], 0, "looking at a circle from two different starting points compares different");
+&comp([$x, $y], [$y, $x], 1, "looking at a circle from two different starting points compares the same");
 &comp([$x, $y], [$x, $y], 1, "a circular structure compares to itself");
 
 

@@ -16,7 +16,7 @@ use Scalar::Util;
 
 @ISA     = qw(Exporter);
 @EXPORT  = qw(Compare);
-$VERSION = 1.2102;
+$VERSION = 1.22;
 $DEBUG   = $ENV{PERL_DATA_COMPARE_DEBUG} || 0;
 
 my %handler;
@@ -119,8 +119,7 @@ sub Compare {
     (ref($x) && exists($been_there{"$x-$xpos-$xparent"}) && $been_there{"$x-$xpos-$xparent"} > 1) ||
     (ref($y) && exists($been_there{"$y-$ypos-$yparent"}) && $been_there{"$y-$ypos-$yparent"} > 1)
   ) {
-    warn("This could go on for a very long time ...\n");
-    $rval = 0; # is this the right thing to do?
+    return 1; # we bail as soon as possible, so if we've *not* bailed and have got here, say we're OK and go to the next sub-structure
   } else {
     $been_there{"$x-$xpos-$xparent"}++ if(ref($x));
     $been_there{"$y-$ypos-$yparent"}++ if(ref($y));
@@ -333,47 +332,10 @@ Comparing a circular structure to itself returns true:
     $y = \$x;
     Compare([$x, $y], [$x, $y]);
 
-But comparing two different circular structures returns false:
-
-    $x = \$y;
-    $y = \$x;
-    Compare([$x, $y], [$y, $x]); # <-- note different order
-
 And on a sort-of-related note, if you try to compare insanely deeply nested
 structures, the module will spit a warning.  For this to affect you, you need to go
 around a hundred levels deep though, and if you do that you have bigger
 problems which I can't help you with ;-)
-
-=head1 STRUCTURAL EQUIVALENCE vs DATA EQUIVALENCE
-
-Consider the following two structures:
-
-    $a={}; $a->{a}=$a;
-    $b={}; $b->{a}=$b;
-
-They have the same structure - a hashref, with a key called 'a' whose value
-is a reference to the original hashref.  However, they contain different
-data, because the values are different.  This is evident when you stringify
-and compare them:
-
-    $a={}; $a->{a}=$a;
-    $b={}; $b->{a}=$b;
-    print $a->{a}."\n";
-    print $b->{a}."\n";
-    print Compare($a, $b)."\n"'
-
-says:
-
-    HASH(0x812c1c8)
-    HASH(0x812cb40)
-    0
-
-If, however, the $b hashref was constructed thus:
-
-    $b={}; $b->{a}=$a;
-
-so that it referred to $a instead of itself, they would be considered the
-same because the data are the same.
 
 =head1 PLUGINS
 

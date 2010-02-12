@@ -1,9 +1,14 @@
+1.22    2010-02-12  DCANTRELL  Previous release was in error.  Instead, fix
+                                 the problem, circular structures now
+                                 compare equal, no matter what the starting
+                                 point (see RT 52836)
+
 1.2102  2010-02-01  DCANTRELL  Add doco about structural vs data equivalence
                                  (see RT 52836)
 
 1.2101  2009-05-05  DCANTRELL  Add full licence text; -I fix in taint tests
                                  to cope with paths with a space in 'em
-				 (thanks to MATISSE, see RT 45676)
+                                 (thanks to MATISSE, see RT 45676)
 
 1.21    2008-08-21  DCANTRELL  Extra tests added in 1.20 now skip with
                                  really old JSON
