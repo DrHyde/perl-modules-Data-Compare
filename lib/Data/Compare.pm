@@ -379,9 +379,9 @@ the empty list, and then call the register_plugins class method:
 
 or you could call it as a function if that floats your boat.
 
-=head1 CODE REPOSITORY
+=head1 SOURCE CODE REPOSITORY
 
-L<http://www.cantrell.org.uk/cgit/cgit.cgi/perlmodules/>
+L<git://github.com/DrHyde/perl-modules-Data-Compare.git>
 
 =head1 BUGS
 
