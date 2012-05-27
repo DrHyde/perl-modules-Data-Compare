@@ -119,6 +119,7 @@ sub Compare {
     (ref($x) && exists($been_there{"$x-$xpos-$xparent"}) && $been_there{"$x-$xpos-$xparent"} > 1) ||
     (ref($y) && exists($been_there{"$y-$ypos-$yparent"}) && $been_there{"$y-$ypos-$yparent"} > 1)
   ) {
+    $opts->{recursion_detector}--;
     return 1; # we bail as soon as possible, so if we've *not* bailed and have got here, say we're OK and go to the next sub-structure
   } else {
     $been_there{"$x-$xpos-$xparent"}++ if(ref($x));
