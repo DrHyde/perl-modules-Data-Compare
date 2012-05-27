@@ -1,3 +1,6 @@
+X.XX    XXXX-XX-XX  DCANTRELL  Add David Muir Sharnoff's tests for
+                                 really big data structures
+
 1.22    2010-02-12  DCANTRELL  Previous release was in error.  Instead, fix
                                  the problem, circular structures now
                                  compare equal, no matter what the starting
