@@ -12,7 +12,7 @@ use warnings;
 use vars qw(@ISA @EXPORT $VERSION $DEBUG %been_there);
 use Exporter;
 use Carp;
-use Scalar::Util;
+use Scalar::Util qw(tainted);
 
 @ISA     = qw(Exporter);
 @EXPORT  = qw(Compare);
@@ -24,9 +24,7 @@ my %handler;
 use Cwd;
 
 sub import {
-  if(eval { chdir(getcwd()) }) { # chdir(getcwd()) isn't taint-safe
-    register_plugins();
-  }
+  register_plugins() unless tainted getcwd();
   __PACKAGE__->export_to_level(1, @EXPORT);
 }
 
@@ -389,11 +387,6 @@ L<git://github.com/DrHyde/perl-modules-Data-Compare.git>
 Plugin support is not quite finished (see the TODO file for details) but
 is usable.  The missing bits are bells and whistles rather than core
 functionality.
-
-Plugins are unavailable if you can't change to the current directory.  This
-might happen if you started your process as a priveleged user and then
-dropped priveleges.  This is due to how we check for Taintedness.  If this
-affects you, please supply a portable patch.
 
 Please report any other bugs either by email to David Cantrell (see below
 for address) or using rt.cpan.org:
