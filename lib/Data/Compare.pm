@@ -146,7 +146,7 @@ sub Compare {
     elsif ($refx ne $refy) { # not the same type
       $rval = 0;
     }
-    elsif ($x == $y) { # exactly the same reference
+    elsif (Scalar::Util::refaddr($x) == Scalar::Util::refaddr($y)) { # exactly the same reference
       $rval = 1;
     }
     elsif ($refx eq 'SCALAR' || $refx eq 'REF') {
@@ -186,7 +186,7 @@ sub Compare {
       $rval = 0;
     }
     else { # a package name (object blessed)
-      my ($type) = "$x" =~ m/^$refx=(\S+)\(/;
+      my $type = Scalar::Util::reftype($x);
       if ($type eq 'HASH') {
         my %x = %$x;
         my %y = %$y;

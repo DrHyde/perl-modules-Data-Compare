@@ -1,3 +1,6 @@
+X.XX    2013-04-15  DAKKAR     Use refaddr & reftype to "do the right thing"
+	                         when comparing objects that overload
+	                         numification and stringification
 X.XX    XXXX-XX-XX  DCANTRELL  Add David Muir Sharnoff's tests for
                                  really big data structures
 
