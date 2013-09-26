@@ -27,4 +27,4 @@ t/saritha-nalagandla-bug/test082_updateevent_multipleinvitees.out
 ARTISTIC.txt
 GPL2.txt
 t/coverage.sh
-t/large-structures.t
+t/FIXME-large-structures.t
