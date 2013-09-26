@@ -1,16 +1,12 @@
 use ExtUtils::MakeMaker qw(WriteMakefile);
 
 WriteMakefile(
-  NAME         => "Data::Compare",
+  NAME         => 'Data::Compare',
   META_MERGE => {
     license => 'other',
     resources => {
-      repository => {
-        web => 'https://github.com/DrHyde/perl-modules-Data-Compare'
-      },
-      bugtracker => {
-        web => 'https://github.com/DrHyde/perl-modules-Data-Compare/issues/new'
-      },
+      repository => 'https://github.com/DrHyde/perl-modules-Data-Compare',
+      bugtracker => 'https://github.com/DrHyde/perl-modules-Data-Compare/issues/new'
     },
   },
   VERSION_FROM => "lib/Data/Compare.pm",
