@@ -2,7 +2,7 @@
 # Author: Fabien Tassin <fta@sofaraway.org>
 # updated by David Cantrell <david@cantrell.org.uk>
 # Copyright 1999-2001 Fabien Tassin <fta@sofaraway.org>
-# portions Copyright 2003 - 2010 David Cantrell
+# portions Copyright 2003 - 2013 David Cantrell
 
 package Data::Compare;
 
@@ -13,10 +13,11 @@ use vars qw(@ISA @EXPORT $VERSION $DEBUG %been_there);
 use Exporter;
 use Carp;
 use Scalar::Util qw(tainted);
+use File::Find::Rule;
 
 @ISA     = qw(Exporter);
 @EXPORT  = qw(Compare);
-$VERSION = 1.22;
+$VERSION = 1.23;
 $DEBUG   = $ENV{PERL_DATA_COMPARE_DEBUG} || 0;
 
 my %handler;
@@ -30,7 +31,6 @@ sub import {
 
 # finds and registers plugins
 sub register_plugins {
-  eval 'use File::Find::Rule';
   foreach my $file (
     File::Find::Rule->file()->name('*.pm')->in(
       map { "$_/Data/Compare/Plugins" }
@@ -405,7 +405,7 @@ Copyright (c) 1999-2001 Fabien Tassin. All rights reserved.
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
-Some parts copyright 2003 - 2010 David Cantrell.
+Some parts copyright 2003 - 2013 David Cantrell.
 
 Seeing that Fabien seems to have disappeared, David Cantrell has become
 a co-maintainer so he can apply needed patches.  The licence, of course,

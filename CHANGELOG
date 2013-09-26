@@ -1,5 +1,10 @@
-X.XX    XXXX-XX-XX  DCANTRELL  Add David Muir Sharnoff's tests for
-                                 really big data structures
+1.23    2013-09-26  DCANTRELL  Add David Muir Sharnoff's tests for
+                                 really big data structures (but not yet
+                                 working);
+                               Check for taint-mode less insanely, thanks
+                                 to Ilmari;
+                               Don't delay loading File::Find::Rule (see
+                                 RT 87554)
 
 1.22    2010-02-12  DCANTRELL  Previous release was in error.  Instead, fix
                                  the problem, circular structures now
