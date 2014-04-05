@@ -6,7 +6,7 @@ use Data::Compare;
 eval "use JSON";
 if($@) {
     eval 'use Test::More skip_all => "no JSON support";exit 0';
-} elsif($JSON::VERSION < 2) {
+} elsif($JSON::VERSION < 2.9) {
     eval 'use Test::More skip_all => "JSON module too old";exit 0';
 } else {
     eval 'use Test::More tests => 2';
