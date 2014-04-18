@@ -415,6 +415,8 @@ distribution.
 
 =head1 SEE ALSO
 
+L<Test::Deep::NoTest>
+
 perl(1), perlref(1)
 
 =cut
