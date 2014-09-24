@@ -16,7 +16,7 @@ if($^O =~ /vms/i) {
     $ENV{PERL5LIB} = '';
     exec(
         join(' ',
-            $^X,
+            $Config{perlpath},
             '-Tw',
             (
 		# map { "-I$_" }
