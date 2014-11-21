@@ -28,3 +28,4 @@ ARTISTIC.txt
 GPL2.txt
 t/coverage.sh
 t/FIXME-large-structures.t
+MANIFEST.SKIP
