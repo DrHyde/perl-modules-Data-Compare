@@ -17,7 +17,7 @@ use File::Find::Rule;
 
 @ISA     = qw(Exporter);
 @EXPORT  = qw(Compare);
-$VERSION = 1.24;
+$VERSION = 1.25;
 $DEBUG   = $ENV{PERL_DATA_COMPARE_DEBUG} || 0;
 
 my %handler;
@@ -405,7 +405,7 @@ Copyright (c) 1999-2001 Fabien Tassin. All rights reserved.
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
-Some parts copyright 2003 - 2013 David Cantrell.
+Some parts copyright 2003 - 2014 David Cantrell.
 
 Seeing that Fabien seems to have disappeared, David Cantrell has become
 a co-maintainer so he can apply needed patches.  The licence, of course,
