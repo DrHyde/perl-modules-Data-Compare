@@ -1,3 +1,7 @@
+X.XX    2013-04-15  DAKKAR     Use refaddr & reftype to "do the right thing"
+	                         when comparing objects that overload
+	                         numification and stringification
+
 1.24    2014-04-05  DCANTRELL  Bump the required JSON.pm version for
                                  tests - something's a bit broken around
                                  about v 2.53
