@@ -6,7 +6,7 @@ WriteMakefile(
     license => 'other',
     resources => {
       repository => 'https://github.com/DrHyde/perl-modules-Data-Compare',
-      bugtracker => 'https://github.com/DrHyde/perl-modules-Data-Compare/issues/new'
+      bugtracker => 'https://github.com/DrHyde/perl-modules-Data-Compare/issues'
     },
   },
   VERSION_FROM => "lib/Data/Compare.pm",
