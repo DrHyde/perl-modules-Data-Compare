@@ -17,7 +17,7 @@ use File::Find::Rule;
 
 @ISA     = qw(Exporter);
 @EXPORT  = qw(Compare);
-$VERSION = 1.24;
+$VERSION = 1.25;
 $DEBUG   = $ENV{PERL_DATA_COMPARE_DEBUG} || 0;
 
 my %handler;
@@ -144,7 +144,7 @@ sub Compare {
     elsif ($refx ne $refy) { # not the same type
       $rval = 0;
     }
-    elsif ($x == $y) { # exactly the same reference
+    elsif (Scalar::Util::refaddr($x) == Scalar::Util::refaddr($y)) { # exactly the same reference
       $rval = 1;
     }
     elsif ($refx eq 'SCALAR' || $refx eq 'REF') {
@@ -184,7 +184,7 @@ sub Compare {
       $rval = 0;
     }
     else { # a package name (object blessed)
-      my ($type) = "$x" =~ m/^$refx=(\S+)\(/;
+      my $type = Scalar::Util::reftype($x);
       if ($type eq 'HASH') {
         my %x = %$x;
         my %y = %$y;
@@ -405,7 +405,7 @@ Copyright (c) 1999-2001 Fabien Tassin. All rights reserved.
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
-Some parts copyright 2003 - 2013 David Cantrell.
+Some parts copyright 2003 - 2014 David Cantrell.
 
 Seeing that Fabien seems to have disappeared, David Cantrell has become
 a co-maintainer so he can apply needed patches.  The licence, of course,
