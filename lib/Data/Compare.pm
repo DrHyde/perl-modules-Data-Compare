@@ -384,9 +384,10 @@ L<git://github.com/DrHyde/perl-modules-Data-Compare.git>
 
 =head1 BUGS
 
-Plugin support is not quite finished (see the TODO file for details) but
-is usable.  The missing bits are bells and whistles rather than core
-functionality.
+Plugin support is not quite finished (see the the Github
+L<issue #5|http://github.com/DrHyde/perl-modules-Data-Compare/issues/5>
+for details) but is usable. The missing bits are bells and whistles rather than
+core functionality.
 
 Please report any other bugs either by email to David Cantrell (see below
 for address) or using rt.cpan.org:
