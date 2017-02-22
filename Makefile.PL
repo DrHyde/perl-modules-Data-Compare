@@ -4,7 +4,7 @@ WriteMakefile(
   NAME         => 'Data::Compare',
   MIN_PERL_VERSION => 5.006,
   META_MERGE => {
-    license => 'other',
+    license => ["artistic_1", "gpl_2"],
     resources => {
       repository => 'https://github.com/DrHyde/perl-modules-Data-Compare',
       bugtracker => 'https://github.com/DrHyde/perl-modules-Data-Compare/issues'
