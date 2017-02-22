@@ -1,3 +1,5 @@
+XXXX    XXXXXXXXXX  DCANTRELL  Minor code quality improvements from Alberto Simões
+
 1.25    2013-04-15  DCANTRELL  Add Gianni Ceccarelli's tests and patch
 				 to Use refaddr & reftype to "do the right
 				 thing" when comparing objects that overload
