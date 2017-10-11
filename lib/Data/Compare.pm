@@ -389,10 +389,7 @@ L<issue #5|http://github.com/DrHyde/perl-modules-Data-Compare/issues/5>
 for details) but is usable. The missing bits are bells and whistles rather than
 core functionality.
 
-Please report any other bugs either by email to David Cantrell (see below
-for address) or using rt.cpan.org:
-
-L<https://rt.cpan.org/Ticket/Create.html?Queue=Data-Compare>
+Bug reports should be made on Github or by email.
 
 =head1 AUTHOR
 
