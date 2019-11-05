@@ -30,3 +30,4 @@ t/FIXME-large-structures.t
 MANIFEST.SKIP
 t/overload.t
 t/lib/SpecialClass.pm
+t/persistent-args-hash.t
