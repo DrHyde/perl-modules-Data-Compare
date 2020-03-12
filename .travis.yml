@@ -1,6 +1,11 @@
 language: perl
 dist: trusty
 env: PERL_USE_UNSAFE_INC=0
+arch:
+  - amd64
+  - arm64
+  - ppc641e
+  - s390x
 perl:
   - "5.8"
   - "5.10"
@@ -17,6 +22,7 @@ perl:
 matrix:
   include:
     - perl: 5.20
+      arch: amd64
       env: COVERAGE=1
 before_install:
   - eval $(curl https://travis-perl.github.io/init) --auto
