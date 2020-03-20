@@ -3,9 +3,9 @@ dist: trusty
 env: PERL_USE_UNSAFE_INC=0
 arch:
   - amd64
-  - arm64
-  - ppc641e
-  - s390x
+#  - arm64
+#  - ppc641e
+#  - s390x
 perl:
   - "5.8"
   - "5.10"
