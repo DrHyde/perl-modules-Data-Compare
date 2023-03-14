@@ -31,3 +31,4 @@ MANIFEST.SKIP
 t/overload.t
 t/lib/SpecialClass.pm
 t/persistent-args-hash.t
+t/bug-undefs-in-hashes.t
