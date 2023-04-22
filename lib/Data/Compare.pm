@@ -271,11 +271,11 @@ Data::Compare - compare perl data structures
       "close enough to identical.\n";
 
     # OO usage
-    my $c = new Data::Compare($h1, \%v);
+    my $c = Data::Compare->new($h1, \%v);
     print 'structures of $h1 and \%v are ',
       $c->Cmp ? "" : "not ", "identical.\n";
     # or
-    my $c = new Data::Compare;
+    my $c = Data::Compare->new();
     print 'structures of $h and \%v are ',
       $c->Cmp($h1, \%v) ? "" : "not ", "identical.\n";
 
