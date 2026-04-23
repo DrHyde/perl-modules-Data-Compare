@@ -1,0 +1,2 @@
+- '-Accflags=-DNO_TAINT_SUPPORT'
+- '-Accflags=-DSILENT_NO_TAINT_SUPPORT'
