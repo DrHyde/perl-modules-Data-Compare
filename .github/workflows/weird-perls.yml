@@ -1,6 +1,10 @@
 # Auto-generated file, see workflow-templates/weird-perls.yml
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - '.github/workflows/weird-perls.yml'
+      - '.github/workflows/run-weird-perls'
 name: Weird perls
 jobs:
   build:
@@ -30,4 +34,4 @@ jobs:
             perl -MConfig -MData::Dumper::Concise -E 'say Dumper({ build => "${{ matrix.weirdness }}", (map { $_, $Config{$_} } qw(taint_support taint_disabled archname ivsize nvsize))})'
             cpanm --installdeps .
             perl Makefile.PL
-            make test
+            make test TEST_VERBOSE=1
