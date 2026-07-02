@@ -16,7 +16,7 @@ jobs:
           - '-Accflags=-DSILENT_NO_TAINT_SUPPORT'
     name: Perl with ${{ matrix.weirdness }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Build perl ...
         run: |
             curl -L https://install.perlbrew.pl | bash
