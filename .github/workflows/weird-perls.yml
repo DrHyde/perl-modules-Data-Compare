@@ -1,13 +1,18 @@
 # Auto-generated file, see workflow-templates/weird-perls.yml
+# To rebuild, see rebuild-workflows in https://github.com/DrHyde/meta-perlmodules
 
 on:
   push:
     paths:
       - '.github/workflows/weird-perls.yml'
       - '.github/workflows/run-weird-perls'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 name: Weird perls
 jobs:
   build:
+    if: github.actor != 'dependabot[bot]'
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
